@@ -1,0 +1,31 @@
+<table class="table table-dark">
+  <tbody>
+  <tr>
+    <th scope="row">Shipping Cost</th>
+    <td>{{getShippingCost()}}</td>
+  </tr>
+  <tr>
+    <th scope="row">Shipping Locations</th>
+    <td>{{getShipToLocation()}}</td>
+  </tr>
+  <tr>
+    <th scope="row">Handling time</th>
+    <td>{{getHandlingTime()}}</td>
+  </tr>
+  <tr>
+    <th scope="row">Expedited Shipping</th>
+    <td [ngStyle]="{'color':'red'}" *ngIf="!getExpeditedShipping() || getExpeditedShipping() === 'false'"><i class="material-icons">close</i></td>
+    <td [ngStyle]="{'color':'green'}" *ngIf="!(!getExpeditedShipping() || getExpeditedShipping() === 'false')"><i class="material-icons">check</i></td>
+  </tr>
+  <tr>
+    <th scope="row">One Day Shipping</th>
+    <td [ngStyle]="{'color':'red'}" *ngIf="!getOneDayShippingAvailable() || getOneDayShippingAvailable() === 'false'"><i class="material-icons">close</i></td>
+    <td [ngStyle]="{'color':'green'}" *ngIf="!(!getOneDayShippingAvailable() || getOneDayShippingAvailable() === 'false')"><i class="material-icons">check</i></td>
+  </tr>
+  <tr>
+    <th scope="row">Return Accepted</th>
+    <td [ngStyle]="{'color':'red'}" *ngIf="!getReturnsAccepted() || getReturnsAccepted() === 'false'"><i class="material-icons">close</i></td>
+    <td [ngStyle]="{'color':'green'}" *ngIf="!(!getReturnsAccepted() || getReturnsAccepted() === 'false')"><i class="material-icons">check</i></td>
+  </tr>
+  </tbody>
+</table>

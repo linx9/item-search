@@ -1,0 +1,58 @@
+<ng-template #message>
+  <div class="alert alert-warning mt-5" role="alert">
+    No Records!
+  </div>
+</ng-template>
+
+<div *ngIf="checkIfShowSimilar(); else message">
+  <div class="form-group">
+    <div class="row">
+      <div class="co2 mr-3">
+        <select class="form-control" [(ngModel)]="sortFactor" name="sortFactor">
+          <option>Default</option>
+          <option>Product Name</option>
+          <option>Days Left</option>
+          <option>Price</option>
+          <option>Shipping Cost</option>
+        </select>
+      </div>
+      <div class="co2 ml-3">
+        <select class="form-control" [disabled]="checkDisable()" [(ngModel)]="sortOrder" name="sortOrder">
+          <option>Ascending</option>
+          <option>Descending</option>
+        </select>
+      </div>
+    </div>
+  </div>
+  <div *ngFor="let element of getSimilarArray();let i = index;">
+    <div class="media bg-dark text-white m-3" *ngIf="i < 5;">
+      <img class="align-self-center m-3" style="width: 150px" src="{{element.imageURL}}" alt="No images">
+      <div class="media-body">
+        <div class="text-info mt-4"><a href="{{element.viewItemURL}}">{{element.title}}</a></div>
+        <div class="text-success">Price: ${{element.buyItNowPrice.__value__}}</div>
+        <div class="text-warning">Shipping Cost: ${{element.shippingCost.__value__}}</div>
+        <div>Days Left: {{extractDays(element.timeLeft)}}</div>
+      </div>
+    </div>
+    <!--hide item more than 5-->
+    <div class="collapse" id="collapseExample">
+      <div class="media bg-dark text-white m-3" *ngIf="i >= 5;">
+        <img class="align-self-center m-3" style="width: 150px" src="{{element.imageURL}}" alt="No images">
+        <div class="media-body">
+          <div class="text-info mt-4"><a href="{{element.viewItemURL}}">{{element.title}}</a></div>
+          <div class="text-success">Price: ${{element.buyItNowPrice.__value__}}</div>
+          <div class="text-warning">Shipping Cost: ${{element.shippingCost.__value__}}</div>
+          <div>Days Left: {{extractDays(element.timeLeft)}}</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row d-flex justify-content-center">
+    <button class="btn btn-dark" type="button" data-toggle="collapse" data-target="#collapseExample"
+            aria-expanded="false" aria-controls="collapseExample"
+            *ngIf="getSimilarArray() && getSimilarArray().length > 5"
+            (click)="setShowButtonText()">
+      {{showButtonText}}
+    </button>
+  </div>
+</div>

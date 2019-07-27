@@ -1,0 +1,7 @@
+<div class="card-columns">
+  <div class="card" *ngFor="let element of getPhotos();">
+    <a href="{{element}}" target="_blank">
+      <img class="card-img-top" src="{{element}}" [ngStyle]="{'border':'7px solid black'}">
+    </a>
+  </div>
+</div>

@@ -1,0 +1,194 @@
+<div class="bg-dark text-white container">
+  <div class="container">
+    <!--the title-->
+    <h1 class="text-center">Product Search</h1>
+    <!--search form-->
+    <div class="">
+      <form (ngSubmit)="onSubmit()" #f="ngForm">
+        <!--keyword-->
+        <div class="form-group row">
+          <label for="keyword" class="col-sm-2 col-form-label">Keyword<span [ngStyle]="{'color':'red'}">*</span></label>
+          <div class="col-sm-8">
+            <input
+              type="text"
+              class="form-control"
+              id="keyword"
+              placeholder="Enter Product Name(eg.iPhone 8)"
+              name="keyword"
+              required
+              [(ngModel)]="keyword"
+              [pattern]="'(?!^ +$)^.+$'"
+              (click)="onDebug(f)"
+              #keywordInput="ngModel">
+            <p *ngIf="keywordInput.invalid && keywordInput.touched"
+               class=".text-danger"
+               [ngStyle]="{'color':'red'}">
+              Please enter a keyword.</p>
+          </div>
+        </div>
+        <!--category-->
+        <div class="form-group row">
+          <label for="category" class="col-sm-2 col-form-label">Category</label>
+          <div class="col-sm-2">
+            <select class="form-control" id="category" name="category" [(ngModel)]="category">
+              <option value="all-categories">All Categories</option>
+              <option value="550">Art</option>
+              <option value="2984">Baby</option>
+              <option value="267">Books</option>
+              <option value="11450">Clothing, Shoes & Accessories</option>
+              <option value="58058">Computers/Tablets & Networking</option>
+              <option value="26395">Health & Beauty</option>
+              <option value="11233">Music</option>
+              <option value="1249">Video Games & Consoles</option>
+            </select>
+          </div>
+        </div>
+        <!--condition-->
+        <div class="row">
+          <label class="col-sm-2">Condition</label>
+          <div class="col-sm-10">
+            <div class="form-check form-check-inline">
+              <input class="form-check-input" type="checkbox" name="new" id="new" value="new" ngModel>
+              <label class="form-check-label" for="new">New</label>
+            </div>
+            <div class="form-check form-check-inline">
+              <input class="form-check-input" type="checkbox" name="used" id="used" value="used" ngModel>
+              <label class="form-check-label" for="used">Used</label>
+            </div>
+            <div class="form-check form-check-inline">
+              <input class="form-check-input" type="checkbox" name="unspecified" id="unspecified" value="unspecified"
+                     ngModel>
+              <label class="form-check-label" for="used">Unspecified</label>
+            </div>
+          </div>
+        </div>
+        <!--shipping option-->
+        <div class="row">
+          <label class="col-sm-2">Shipping Option</label>
+          <div class="col-sm-10">
+            <div class="form-check form-check-inline">
+              <input class="form-check-input" type="checkbox" name="localPickup" id="localPickup" value="localPickup"
+                     ngModel>
+              <label class="form-check-label" for="new">Local Pickup</label>
+            </div>
+            <div class="form-check form-check-inline">
+              <input class="form-check-input" type="checkbox" name="freeShipping" id="freeShipping" value="freeShipping"
+                     ngModel>
+              <label class="form-check-label" for="used">Free Shipping</label>
+            </div>
+          </div>
+        </div>
+        <!--distance-->
+        <div class="form-group row">
+          <label for="keyword" class="col-sm-2 col-form-label">Distance (Miles)</label>
+          <div class="col-sm-2">
+            <input type="text" class="form-control" id="distance" placeholder="10" name="distance" ngModel>
+          </div>
+        </div>
+
+        <div class="form-group row">
+          <!--from-radios-->
+          <label class="col-sm-2 col-form-label">From<span [ngStyle]="{'color':'red'}">*</span></label>
+          <div class="col-sm-4">
+            <div class="form-check">
+              <label class="form-check-label" for="current">
+                <input
+                  class="form-check-input"
+                  type="radio"
+                  name="fromRadios"
+                  id="current"
+                  value="current"
+                  [(ngModel)]="fromRadios"
+                  (click)="onCurrentClick()"
+                  required
+                >
+                Current Location
+              </label>
+            </div>
+            <div class="form-check">
+              <label class="form-check-label" for="other">
+                <input class="form-check-input"
+                       type="radio"
+                       name="fromRadios"
+                       id="other"
+                       value="other"
+                       [(ngModel)]="fromRadios"
+                       (click)="onOtherClick()"
+                       required
+                >
+                Other. Please specify zip code:
+              </label>
+            </div>
+            <!--zip code text-->
+            <div class="row">
+              <input type="text"
+                     class="form-control"
+                     id="zipCodeText"
+                     name="zipCodeText"
+                     [(ngModel)]="resultParams.zipCodeText"
+                     [disabled]="checkZipCodeDisable()"
+                     [pattern]="'^[0-9]{5}$'"
+                     require
+                     #zipText="ngModel"
+                     matInput
+                     [matAutocomplete]="auto"
+                     (input)="onInput()"
+                     [required]="zipTextRequire"
+              >
+              <mat-autocomplete #auto="matAutocomplete" class="border">
+                <mat-option *ngFor="let option of options" [value]="option">{{option}}</mat-option>
+              </mat-autocomplete>
+              <p *ngIf="zipText.value==='' && zipText.touched && fromRadios==='other'"
+                 class=".text-danger"
+                 [ngStyle]="{'color':'red'}">
+                Please enter a zip code.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group row">
+          <div class="ml-3 mr-5">
+            <button
+              type="submit"
+              class="btn btn-light d-inline-flex justify-content-center align-content-between"
+              [disabled]="!f.valid"
+              routerLink="/detail"
+              (click)="onSubmit()">
+              <i class="material-icons">search</i>
+              Search
+            </button>
+          </div>
+          <div class="">
+            <button
+              type="button"
+              class="btn btn-light d-inline-flex justify-content-center align-content-between"
+              (click)="onReset()"
+              routerLink="/">
+              <i class="material-icons">clear_all</i>
+              Clear
+            </button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+<div class="container">
+  <ul class="nav nav-pills d-flex justify-content-center font-weight-bold">
+    <li class="nav-item">
+      <a class="nav-link"
+         routerLink="/result"
+         [ngClass]="{'bg-dark text-white': !checkURLIsWishList(), 'text-dark': checkURLIsWishList()}">
+        Results
+      </a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link"
+         routerLinkActive="bg-dark text-white"
+         routerLink="/wishlist"
+         [ngClass]="{'text-dark': !checkURLIsWishList()}">
+        Wish List
+      </a>
+    </li>
+  </ul>
+</div>

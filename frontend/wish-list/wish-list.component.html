@@ -1,0 +1,56 @@
+<ng-template #message>
+  <div class="alert alert-warning" role="alert">
+    No Records!
+  </div>
+</ng-template>
+<div *ngIf="!noRecord();else message">
+  <div class="table-responsive">
+    <table class="table table-dark">
+      <thead>
+      <tr>
+        <th scope="col">#</th>
+        <th scope="col">Image</th>
+        <th scope="col">Title</th>
+        <th scope="col">Price</th>
+        <th scope="col">Shipping</th>
+        <th scope="col">Seller</th>
+        <th scope="col">Wish List</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let element of myLocalStorageArray; let i = index;"
+          [ngClass]="{'bg-secondary': checkWishListHighLight(i)}">
+        <th scope="row">{{i + 1}}</th>
+        <td><img src="{{getCurImage(i)}}" alt="no images" style="width: 150px"></td>
+        <td>
+          <p (click)="onClickWishListItem(i, getCurTitle(i))"
+             style="cursor: pointer"
+             routerLink="/detail/product"
+             [ngStyle]="{'color':'#435ef9'}"
+             matTooltip="{{getCurTitle(i)}}">
+            {{myTruncate(getCurTitle(i))}}
+          </p>
+        </td>
+        <td>${{getCurPrice(i)}}</td>
+        <td>{{getCurShipping(i)}}</td>
+        <td>{{getCurSeller(i)}}</td>
+        <td>
+          <button type="button" class="btn btn-light d-inline-flex justify-content-center align-content-between"
+                  (click)="removeFromWishList(element.itemId[0])">
+            <i class="material-icons text-warning ">remove_shopping_cart</i>
+          </button>
+        </td>
+      </tr>
+      <tr>
+        <th></th>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td>Total Shopping</td>
+        <td>${{countTotalCost()}}</td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

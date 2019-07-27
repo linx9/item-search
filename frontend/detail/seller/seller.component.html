@@ -1,0 +1,48 @@
+<div class="table-responsive">
+  <table class="table table-dark">
+    <tbody>
+    <tr *ngIf="getFeedbackScore()">
+      <th scope="row">Feedback Score</th>
+      <td>{{getFeedbackScore()}}</td>
+    </tr>
+    <tr *ngIf="getPositiveFeedbackPercent()">
+      <th scope="row">Popularity</th>
+      <td *ngIf="getPositiveFeedbackPercent()">
+        <div class="my-wrapper" style="position: relative">
+          <div
+            style="position: absolute;width: 60px;height: 60px;left: 3px; top: 3px;">{{getPositiveFeedbackPercent()}}</div>
+          <div style="position: absolute">
+            <round-progress
+              [current]="getPositiveFeedbackPercent()"
+              [max]="100"
+              [color]="'#51840a'"
+              [radius]="18"
+              [stroke]="1"
+            >
+            </round-progress>
+          </div>
+        </div>
+      </td>
+    </tr>
+    <tr *ngIf="getFeedbackRatingStar()">
+      <th scope="row">Feedback Rating Star</th>
+      <td><i [ngStyle]="getStarColor()" class="material-icons">{{printStars()}}</i></td>
+    </tr>
+    <tr *ngIf="getTopRatedSeller()">
+      <th scope="row">Top Rated</th>
+      <td [ngStyle]="{'color':'red'}" *ngIf="!getTopRatedSeller() || getTopRatedSeller() === 'false'"><i
+        class="material-icons">close</i></td>
+      <td [ngStyle]="{'color':'green'}" *ngIf="!(!getTopRatedSeller() || getTopRatedSeller() === 'false')"><i
+        class="material-icons">check</i></td>
+    </tr>
+    <tr *ngIf="getStoreName()">
+      <th scope="row">Store Name</th>
+      <td>{{getStoreName()}}</td>
+    </tr>
+    <tr *ngIf="getStoreURL()">
+      <th scope="row">Buy Product At</th>
+      <td><a href="{{getStoreURL()}}" target="_blank" [ngStyle]="{'color':'green'}">Store</a></td>
+    </tr>
+    </tbody>
+  </table>
+</div>
